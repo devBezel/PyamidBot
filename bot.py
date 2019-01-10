@@ -4,8 +4,8 @@ import datetime
 
 TOKEN = 'NTMyNTUzMzk3MTk1NTA1Njg4.DxfSPg._oPnvpyIHAGE_h8_6NPiNjd5Dac'
 ICON_URL = "https://cdn.discordapp.com/attachments/473218411670011904/532690186791026688/pyamid.png"
-FOOTER = "Bot created by bezel"
 TIME_DATE = datetime.datetime.now()
+FOOTER = "Bot created by bezel {}".format(TIME_DATE)
 client = commands.Bot(command_prefix='!')
 
 @client.event
@@ -27,16 +27,20 @@ async def on_member_join(member):
     em.set_footer(text=FOOTER)
     await client.send_message(client.get_channel('532686123508432897'), embed=em)
 
-@client.command()
-async def ping():
-    await client.say("Pong!")
 
-@client.command()
-async def bot(ctx):
+@client.command(pass_context = True)
+async def infobot(ctx):
     channel = ctx.message.channel
     em = discord.Embed(title='', description='', colour=discord.Colour.blue())
-    em.set_author(name="Informacje o bocie", icon_url=ICON_URL)
-    em.set_thumbnail(url="https://cdn.discordapp.com/attachments/473218411670011904/532710025123332101/python-7be70baaac.png")
+    em.set_author(name="Informacje o PyamidBot", icon_url=ICON_URL)
+    em.add_field(name="Autor", value="bezel", inline = True)
+    em.add_field(name="Data rozpoczęcia prac", value="09/01/2018", inline = True)
+    em.add_field(name="Technologia", value="Python", inline = True)
+    em.add_field(name="Wersja", value="0.1", inline = True)
+    em.add_field(name="Opis", value="Bot stworzony z myślą o społeczności pyamid, jej moderacji i do wspolnej zabawy. Możesz sprawdzić jego możliwości pod komendą !pomoc", inline = True)
+    em.set_image(url="https://cdn.discordapp.com/attachments/473218411670011904/533048524502335517/iPEsF.png")
+    em.set_thumbnail(url="https://cdn.discordapp.com/attachments/473218411670011904/533049638446432286/Discord_Thonk.png")
+    em.set_footer(text=FOOTER)
     await client.send_message(channel, embed=em)
 
 
@@ -79,7 +83,7 @@ async def on_message_delete(message):
 @client.event
 async def on_reaction_add(reaction, user):
     channel = reaction.message.channel
-    await client.send_message(client.get_channel('532671695782150146'), ':shield: ``[SERVER_LOG_ADD_EMOJI]`` - {} dodał emoji {} do wiadomości: {}'.format(user.name, reaction.emoji, reaction.message.content))
+    await client.send_message(client.get_channel('532671695782150146'), ':shield: ``[SERVER_LOG_ADD_EMOJI |{}|]`` - {} dodał emoji {} do wiadomości: {}'.format(TIME_DATE, user.name, reaction.emoji, reaction.message.content))
 
 #@client.event
 #async def on_message(message):
