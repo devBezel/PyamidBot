@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import asyncio
 import datetime
 
 TOKEN = 'NTMyNTUzMzk3MTk1NTA1Njg4.DxfSPg._oPnvpyIHAGE_h8_6NPiNjd5Dac'
