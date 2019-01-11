@@ -13,6 +13,7 @@ config = utils.default.get("config.json")
 FOOTER = "Bot created by bezel 🔷 {}".format(TIME_DATE)
 client = commands.Bot(command_prefix=config.prefix)
 
+extentions = ["modules/events.py"]
 @client.event
 async def on_ready():
     print('Gotowy: Tak')
@@ -53,45 +54,12 @@ async def info(ctx, user: discord.Member):
     em.set_footer(text=FOOTER)
     await client.send_message(channel, embed=em)
 
-@client.command(pass_context = True)
-async def clear(ctx, amount=100):
-    channel = ctx.message.channel
-    author_message = ctx.message.author
 
-    messages = []
-    async for message in client.logs_from(channel, limit=int(amount) + 1):
-        messages.append(message)
-    await client.delete_messages(messages)
-    em = discord.Embed(title='', description='', colour=discord.Colour.blue())
-    em.set_author(name='{} usunął {} wiadomości'.format(author_message, amount), icon_url=ICON_URL)
-    em.set_footer(text=FOOTER)
-    await client.send_message(channel, embed=em)
-
-
-
-
-#@client.event
-#async def on_message(message):
-#    if message.content.startswith(".react"):
-#        msg = await client.send_message(message.channel, "Głosowanie")
- #       res = await client.wait_for_reaction(['👍', '👎'], message = msg)
-  #      await client.send_message(message.channel, '{0.user}, zareagował emotikoną {0.reaction.emoji}!'.format(res))
-
-#@client.event
-#async def on_message(message):
- #   if message.content.startswith(".embed"):
-  #      em = discord.Embed(title="Tytul", description="Opis", colour=0x00ffe)
-   #     em.add_field(name="imie", value="wartość")
-    #    await client.send_message(message.channel, embed=em)
-
-#@client.event
-#async def on_message(message):
-    #if message.content.startswith("kurwa"):
-        #await client.delete_message(message)
-        #await client.send_message(message.channel, '``Wiadomość **"{}"** została usunięta z powodu naruszeń regulaminu``'.format(message.content))
-for file in os.listdir("modules"):
-    if file.endswith(".py"):
-        name = file[:-2]
-        client.load_extension(f"modules.{name}")
+if __name__ == "__main__":
+    for extention in extentions:
+        try:
+            client.load_extension(extention)
+        except Exception as error:
+            print("{} nie można załadować {}".format(extention, error))
 
 client.run(TOKEN)
