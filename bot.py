@@ -1,14 +1,17 @@
+import os
 import discord
 from discord.ext import commands
 import asyncio
+import utils.default
 import datetime
 
 TOKEN = 'NTMyNTUzMzk3MTk1NTA1Njg4.DxfSPg._oPnvpyIHAGE_h8_6NPiNjd5Dac'
 ICON_URL = "https://cdn.discordapp.com/attachments/473218411670011904/532690186791026688/pyamid.png"
 global_time = datetime.datetime.now()
 TIME_DATE = global_time.strftime("%H:%M %d.%m.%Y")
+config = utils.default.get("config.json")
 FOOTER = "Bot created by bezel 🔷 {}".format(TIME_DATE)
-client = commands.Bot(command_prefix='!')
+client = commands.Bot(command_prefix=config.prefix)
 
 @client.event
 async def on_ready():
@@ -17,17 +20,6 @@ async def on_ready():
     print("ID: " + client.user.id)
     await client.change_presence(game=discord.Game(name='PyamidRP'))
 
-@client.event
-async def on_member_join(member):
-    role = discord.utils.get(member.server.roles, name='Użytkownik')
-    await client.add_roles(member, role)
-    em = discord.Embed(title='Witamy na serwerze pyamid.pl {}'.format(member.name), description='', colour=discord.Colour.blue())
-    em.set_author(name='PyamidRP', icon_url=ICON_URL)
-    em.set_thumbnail(url=ICON_URL)
-    em.add_field(name='Strona internetowa', value='pyamid.pl', inline=True)
-    em.add_field(name='Panel gracza', value='Wkrotce', inline=True)
-    em.set_footer(text=FOOTER)
-    await client.send_message(client.get_channel('532686123508432897'), embed=em)
 
 
 @client.command(pass_context = True)
@@ -75,17 +67,8 @@ async def clear(ctx, amount=100):
     em.set_footer(text=FOOTER)
     await client.send_message(channel, embed=em)
 
-@client.event
-async def on_message_delete(message):
-    author = message.author
-    content = message.content
-    channel = message.channel
-    await client.send_message(client.get_channel('532671695782150146'), ':shield: ``[SERVER_LOG_DELETE_MESSAGES |{}|]`` - {}: {}'.format(TIME_DATE,author, content))
 
-@client.event
-async def on_reaction_add(reaction, user):
-    channel = reaction.message.channel
-    await client.send_message(client.get_channel('532671695782150146'), ':shield: ``[SERVER_LOG_ADD_EMOJI |{}|]`` - {} dodał emoji {} do wiadomości: {}'.format(TIME_DATE, user.name, reaction.emoji, reaction.message.content))
+
 
 #@client.event
 #async def on_message(message):
@@ -106,5 +89,9 @@ async def on_reaction_add(reaction, user):
     #if message.content.startswith("kurwa"):
         #await client.delete_message(message)
         #await client.send_message(message.channel, '``Wiadomość **"{}"** została usunięta z powodu naruszeń regulaminu``'.format(message.content))
+for file in os.listdir("modules"):
+    if file.endswith(".py"):
+        name = file[:-2]
+        client.load_extension(f"modules.{name}")
 
 client.run(TOKEN)
