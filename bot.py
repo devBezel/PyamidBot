@@ -5,8 +5,9 @@ import datetime
 
 TOKEN = 'NTMyNTUzMzk3MTk1NTA1Njg4.DxfSPg._oPnvpyIHAGE_h8_6NPiNjd5Dac'
 ICON_URL = "https://cdn.discordapp.com/attachments/473218411670011904/532690186791026688/pyamid.png"
-TIME_DATE = datetime.datetime.now()
-FOOTER = "Bot created by bezel {}".format(TIME_DATE)
+global_time = datetime.datetime.now()
+TIME_DATE = global_time.strftime("%H:%M %d.%m.%Y")
+FOOTER = "Bot created by bezel 🔷 {}".format(TIME_DATE)
 client = commands.Bot(command_prefix='!')
 
 @client.event
