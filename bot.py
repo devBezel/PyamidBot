@@ -18,7 +18,7 @@ async def on_ready():
     print('Gotowy: Tak')
     print("Nazwa: " + client.user.name)
     print("ID: " + client.user.id)
-    await client.change_presence(game=discord.Game(name='PyamidRP'))
+    await client.change_presence(game=discord.Game(name='PyamidRP BOT | BETA'))
     
 
 
