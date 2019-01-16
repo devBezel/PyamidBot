@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import has_permissions
 import datetime
 import asyncio
 
@@ -16,8 +17,9 @@ class Admin:
         self.client = client
 
 
-
+    
     @commands.command(pass_context = True)
+    @has_permissions(manage_messages=True)
     async def clear(self, ctx, amount=100):
         channel = ctx.message.channel
         author_message = ctx.message.author
@@ -30,7 +32,17 @@ class Admin:
         em.set_footer(text=footer)
         await self.client.send_message(channel, embed=em)
 
-
+    @commands.command(pass_context=True)
+    @has_permissions(manage_messages=True)
+    async def news(self, ctx, *, args):
+        channel = ctx.message.channel
+        author_message = ctx.message.author
+        await self.client.delete_message(ctx.message)
+        
+        em = discord.Embed(title="", description=args, colour=discord.Colour.blue())
+        em.set_author(name="Ogłoszenie od {}".format(author_message), icon_url=icon_author)
+        em.set_footer(text=footer)
+        await self.client.send_message(channel, embed=em)
 
 def setup(client):
     client.add_cog(Admin(client))

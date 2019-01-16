@@ -27,17 +27,15 @@ class Events:
         em.set_footer(text=footer)
         await self.client.send_message(self.client.get_channel(config.channel_logs), embed=em)
 
-    async def on_reaction_add(self, reaction, user):
-        channel = reaction.message.channel
-        await self.client.send_message(self.client.get_channel(config.channel_logs), ':shield: ``[SERVER_LOG_ADD_EMOJI |{}|]`` - {} dodał emoji {} do wiadomości: {}'.format(date_time, user.name, reaction.emoji, reaction.message.content))
+    #async def on_reaction_add(self, reaction, user):
+     #   channel = reaction.message.channel
+      #  await self.client.send_message(self.client.get_channel#(config.channel_logs), ':shield: ``[SERVER_LOG_ADD_EMOJI |{}|]`` - {} dodał emoji {} do wiadomości: {}'.format(date_time, user.name, reaction.emoji, reaction.message.content))
     
     async def on_message_delete(self, message):
         author = message.author
         content = message.content
-        channel = message.channel
         await self.client.send_message(self.client.get_channel(config.channel_logs), ':shield: ``[SERVER_LOG_DELETE_MESSAGES |{}|]`` - {}: {}'.format(date_time,author, content))
 
-    async def on_command_error(self, ctx)
 
 def setup(client):
     client.add_cog(Events(client))
