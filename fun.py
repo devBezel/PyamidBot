@@ -2,16 +2,21 @@ import discord
 from discord.ext import commands
 import datetime
 from utils import default, lists
-import objectpath
 import aiohttp
 import asyncio
 import random
+import Cleverbotio
 
+#Main config
 config = default.get("config.json")
 global_time = datetime.datetime.now()
 date_time = global_time.strftime("%H:%M %d.%m.%Y")
 footer = "Bot created by bezel 🔷 {}".format(date_time)
 icon_author = "https://cdn.discordapp.com/attachments/473218411670011904/532690186791026688/pyamid.png"
+
+#Clever bot
+cb = Cleverbotio.Cleverbot('xLHG1qnLqxnL3p9Z', '2BZJz7yMXF2K2DrY5ZeDCOjQkXl0mMjL', 'bezel')
+cb.create_session()
 
 class Fun:
     def __init__(self, client):
@@ -99,6 +104,14 @@ class Fun:
             emoji = "💞"
         
         await self.client.send_message(ctx.message.channel, f"{user.name} jest hot na {person_hot:.2f}% {emoji}")
+
+    @commands.command(pass_context = True)
+    async def rozmawiaj(self, ctx, *, question):
+        resp = cb.say(question)
+        resp = resp['response']
+        await self.client.send_message(ctx.message.channel, resp)
+
+
 
 
 def setup(client):
